@@ -24,9 +24,10 @@ dscl . -create /Users/$USERNAME
 dscl . -passwd /Users/$USERNAME "$PASSWORD"
 dscl . -create /Users/$USERNAME RealName "$REALNAME"
 dscl . -create /Users/$USERNAME UniqueID "$ID"
-dscl . -create /Users/$USERNAME PrimaryGroupID 80
+dscl . -create /Users/$USERNAME PrimaryGroupID 80 #possibly should be 20 and rely on adding below
 dscl . -create /Users/$USERNAME UserShell /usr/bin/bash
 dscl . -create /Users/$USERNAME NFSHomeDirectory /User/$USERNAME
+
 echo "[pass] sharing user $USERNAME user created"
 #add the user to the admin groups
 for GROUP in $ADMIN_GROUPS ; do
@@ -40,5 +41,7 @@ done
 #[-home <full path to home>] 
 #[-admin] 
 #[-picture <full path to user image>]
+
+#dscl . -delete "/SharePoints/$USERNAME's Public Folder" # Removes the public folder sharepoint for the local admin?
 
 exit 0
