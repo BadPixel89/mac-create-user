@@ -4,12 +4,12 @@ if [[ $UID -ne 0 ]];
 then echo "[info] please run as admin"; 
 exit 1
 fi
-#fill these as desired
-USERNAME=
+
+#fill these as desired 
+USERNAME=""
 REALNAME=""
 PASSWORD=""
-
-if [ "$USERNAME" == "" ] ; then echo "[info] no username set"; exit 1; fi
+HIDDEN=0 # set to 1 for hidden account
 
 #get the highest valued ID and add one
 OLDID=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ug | tail -1)
@@ -23,5 +23,6 @@ dscl . -create /Users/$USERNAME UniqueID "$ID"
 dscl . -create /Users/$USERNAME PrimaryGroupID 20
 dscl . -create /Users/$USERNAME UserShell /usr/bin/false
 dscl . -create /Users/$USERNAME NFSHomeDirectory /dev/null
+dscl . -create /Users/$USERNAME IsHidden $HIDDEN
 echo "[pass] sharing user $USERNAME user created"
 exit 0
