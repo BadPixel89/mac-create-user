@@ -3,8 +3,8 @@
 if [ $# == 0 ]; then
     echo "usage: sharinguser.sh [-nrp]"
     echo "    -n <string>[required] specify username"
-    echo "    -r <string>[optional] specify real name, will match user name if not specified"
-    echo "    -p <string>[optional] specify password"
+    echo "    -r <string>[optional] specify real name, if not specified will match user name"
+    echo "    -p <string>[optional] specify password, if not specified will prompt to confirm no password"
     echo "    -h <string>[optional] specify 1 for hidden account, default is visible"
     exit
 fi
@@ -14,13 +14,13 @@ then echo "[info] please run as admin";
 exit 1
 fi
 
-#fill these as desired and remove flag parsing if you need to make the same account every time
+#use basic script and fill these in if you need to make the same account every time
 USERNAME=
 REALNAME=""
 PASSWORD=""
 HIDDEN="0"
 
-while getopts n:r:p: flag
+while getopts n:r:p:h flag
 do
     case "${flag}" in
         n) USERNAME=${OPTARG};;
@@ -35,14 +35,21 @@ done
 if [ "$USERNAME" == "" ] ; then echo "[info] please set a username"; exit 1; fi
 if [ "$REALNAME" == "" ] ; then REALNAME=$USERNAME; fi
 
-if [ "$PASSWORD" == "" ] ; then read -p "[warn] no password set. continue? (y/n)" yn; 
+if [ "$PASSWORD" == "" ] ; then read -p "[warn] no password set. Continue with no password? (y/n)" yn; 
     case $yn in 
         y) echo "[info] continuing without password";;
         n) echo "[info] please re-run with the -p flag specified";
         exit 0;;
-        *)
-        exit 0;;
+        *) exit 0;;
     esac
+fi
+
+
+#######
+#test this
+#######
+if ! (( 0 <= HIDDEN <= 1 )); then
+    HIDDEN="0"
 fi
 
 #get the highest valued ID and add one
