@@ -24,16 +24,21 @@ dscl . -create /Users/$USERNAME
 dscl . -passwd /Users/$USERNAME "$PASSWORD"
 dscl . -create /Users/$USERNAME RealName "$REALNAME"
 dscl . -create /Users/$USERNAME UniqueID "$ID"
-dscl . -create /Users/$USERNAME PrimaryGroupID 80 #possibly should be 20 and rely on adding below
+dscl . -create /Users/$USERNAME PrimaryGroupID 20 #80 is admin but should be 20 (staff) and rely on adding below
 dscl . -create /Users/$USERNAME UserShell /usr/bin/bash
 dscl . -create /Users/$USERNAME NFSHomeDirectory /User/$USERNAME
 
-echo "[pass] sharing user $USERNAME user created"
+echo "[pass] admin user $USERNAME created"
 #add the user to the admin groups
+echo "[info] adding user $USERNAME to admin groups"
 for GROUP in $ADMIN_GROUPS ; do
     dseditgroup -o edit -t user -a "$USERNAME" "$GROUP"
+    echo "[pass] $USERNAME added to $GROUP"
 done 
 
+echo "[pass] $USERNAME created and added to admin groups"
+
+# might be needed below to actually add the gome dir correctly
 #-addUser <user name> [-fullName <full name>] 
 #[-UID <user ID>] 
 #[-password <user password>] 
