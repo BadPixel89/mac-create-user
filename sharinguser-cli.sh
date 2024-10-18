@@ -65,5 +65,5 @@ dscl . -create /Users/$USERNAME PrimaryGroupID 20
 dscl . -create /Users/$USERNAME UserShell /usr/bin/false
 dscl . -create /Users/$USERNAME NFSHomeDirectory /dev/null
 dscl . -create /Users/$USERNAME IsHidden "$HIDDEN"
-echo "[pass] sharing user $USERNAME user created with ID: $ID"
+echo "[pass] sharing user $USERNAME created with ID: $ID and hidden state $HIDDEN"
 exit 0
